@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+//import { Component, OnInit } from '@angular/core';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {Registration} from './registration';
-
+import {Component, OnInit,ViewEncapsulation} from '@angular/core';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
+  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./registration.component.css']
-})
+  })
 export class RegistrationComponent implements OnInit {
 
   // It maintains list of Registrations
@@ -23,8 +25,7 @@ selectedRow: number;
 countries: string[] = ['US', 'UK', 'India', 'UAE'];
 
 
-  constructor(
-  ) { // Add default registration data.
+  constructor(private modalService: NgbModal){ // Add default registration data.
     this.registrations.push(new Registration('Johan', 'Peter', {year: 1980, month: 5, day: 12}, 'johan@gmail.com', 'johan123', 'UK'));
     this.registrations.push(new Registration('Mohamed', 'Tariq', {year: 1975, month: 12, day: 3}, 'tariq@gmail.com', 'tariq123', 'UAE'));
     this.registrations.push(new Registration('Nirmal', 'Kumar', {year: 1970, month: 7, day: 25}, 'nirmal@gmail.com', 'nirmal123', 'India'));
@@ -71,19 +72,23 @@ onEdit(index: number) {
   // Display registration entry section.
   this.showNew = true;
   }
-
+  onDeleteModal(content){
+    this.modalService.open(content, { centered: true });
+  }
   onDelete(index: number) {
     // Delete the corresponding registration entry from the list.
     this.registrations.splice(index, 1);
+    //this.showNew = false;
+    //this.modalService.dismiss();
+    
   }
-
   onCancel() {
     // Hide registration entry section.
     this.showNew = false;
-    }
-    onChangeCountry(country: string) {
-      // Assign corresponding selected country to model.
-      this.regModel.country = country;
-      }
+  }
+  onChangeCountry(country: string) {
+    // Assign corresponding selected country to model.
+    this.regModel.country = country;
+  }
 
 }
